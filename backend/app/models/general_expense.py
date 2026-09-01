@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
@@ -14,7 +14,7 @@ class GeneralExpense(Base):
         nullable=False
     )
 
-    amount: Mapped[float] = mapped_column(
+    amount: Mapped[Numeric(12, 2)] = mapped_column(
         nullable=False
     )
 

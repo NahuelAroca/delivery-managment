@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from sqlalchemy import Date, DateTime, ForeignKey, String
+from sqlalchemy import Date, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
@@ -28,6 +28,7 @@ class Load(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
+        server_default=func.now(),
         nullable=False
     )
 
