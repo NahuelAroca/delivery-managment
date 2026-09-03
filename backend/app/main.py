@@ -1,9 +1,15 @@
 from fastapi import FastAPI
 
+from app.routers.drivers import router as drivers_router
+
+
 app = FastAPI(
     title="Delivery Management API",
     version="0.1.0"
 )
+
+
+app.include_router(drivers_router)
 
 
 @app.get("/")

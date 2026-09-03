@@ -14,7 +14,8 @@ class GeneralExpense(Base):
         nullable=False
     )
 
-    amount: Mapped[Numeric(12, 2)] = mapped_column(
+    amount: Mapped[float] = mapped_column(
+        Numeric(12, 2),
         nullable=False
     )
 
