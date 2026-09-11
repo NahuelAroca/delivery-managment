@@ -1,5 +1,5 @@
-from datetime import date
 from typing import Annotated, Literal
+from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -36,3 +36,12 @@ LoadCreate = Annotated[
     ReceiptLoadCreate | FuelLoadCreate | GeneralLoadCreate,
     Field(discriminator="category"),
 ]
+
+class LoadResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    driver_id: int
+    category: str
+    date: date
+    created_at: datetime
