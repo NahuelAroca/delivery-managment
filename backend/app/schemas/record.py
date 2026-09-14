@@ -45,3 +45,19 @@ class RecordResponse(BaseModel):
     category: str
     date: date
     created_at: datetime
+
+class PhotoResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    file_path: str
+
+class RecordDetailResponse(RecordResponse):
+    loading_location: str | None = None
+    destination: str | None = None
+    company: str | None = None
+    remito_number: str | None = None
+    liters: float | None = None
+    amount: float | None = None
+    
+    photos: list[PhotoResponse] = []
