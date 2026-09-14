@@ -4,13 +4,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
 
-class Receipt(Base):
-    __tablename__ = "receipts"
+class Remito(Base):
+    __tablename__ = "remitos"
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    load_id: Mapped[int] = mapped_column(
-        ForeignKey("loads.id"),
+    record_id: Mapped[int] = mapped_column(
+        ForeignKey("records.id"),
         nullable=False
     )
 
@@ -29,9 +29,9 @@ class Receipt(Base):
         nullable=False
     )
 
-    receipt_number: Mapped[str] = mapped_column(
+    remito_number: Mapped[str] = mapped_column(
         String(100),
         nullable=False
     )
 
-    load = relationship("Load")
+    record = relationship("Record")

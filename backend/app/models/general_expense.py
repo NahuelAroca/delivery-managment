@@ -9,8 +9,8 @@ class GeneralExpense(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    load_id: Mapped[int] = mapped_column(
-        ForeignKey("loads.id"),
+    record_id: Mapped[int] = mapped_column(
+        ForeignKey("records.id"),
         nullable=False
     )
 
@@ -19,4 +19,4 @@ class GeneralExpense(Base):
         nullable=False
     )
 
-    load = relationship("Load")
+    record = relationship("Record")

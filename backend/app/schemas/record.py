@@ -4,40 +4,40 @@ from datetime import date, datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class LoadBase(BaseModel):
+class RecordBase(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     driver_id: int
     date: date
 
 
-class ReceiptLoadCreate(LoadBase):
-    category: Literal["receipt"]
+class RemitoRecordCreate(RecordBase):
+    category: Literal["remito"]
 
     loading_location: str
     destination: str
     company: str
-    receipt_number: str
+    remito_number: str
 
 
-class FuelLoadCreate(LoadBase):
+class FuelRecordCreate(RecordBase):
     category: Literal["fuel"]
 
     liters: float
 
 
-class GeneralLoadCreate(LoadBase):
+class GeneralRecordCreate(RecordBase):
     category: Literal["general"]
 
     amount: float
 
 
-LoadCreate = Annotated[
-    ReceiptLoadCreate | FuelLoadCreate | GeneralLoadCreate,
+RecordCreate = Annotated[
+    RemitoRecordCreate | FuelRecordCreate | GeneralRecordCreate,
     Field(discriminator="category"),
 ]
 
-class LoadResponse(BaseModel):
+class RecordResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int

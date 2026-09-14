@@ -5,28 +5,28 @@ from pydantic import TypeAdapter
 from sqlalchemy.orm import Session
 
 from app.database.database import get_db
-from app.schemas.load import LoadCreate, LoadResponse
-from app.services.load_service import create_load
+from app.schemas.record import RecordCreate, RecordResponse
+from app.services.record_service import create_record
 
 
 router = APIRouter(
-    prefix="/loads",
-    tags=["Loads"],
+    prefix="/records",
+    tags=["Records"],
 )
 
 
-load_adapter = TypeAdapter(LoadCreate)
+record_adapter = TypeAdapter(RecordCreate)
 
 
-@router.post("/", response_model=LoadResponse)
-def create_load_endpoint(
+@router.post("/", response_model=RecordResponse)
+def create_record_endpoint(
     driver_id: int = Form(...),
     category: str = Form(...),
     date: date = Form(...),
     loading_location: str | None = Form(None),
     destination: str | None = Form(None),
     company: str | None = Form(None),
-    receipt_number: str | None = Form(None),
+    remito_number: str | None = Form(None),
     liters: float | None = Form(None),
     amount: float | None = Form(None),
     photos: list[UploadFile] = File(...),
@@ -39,7 +39,7 @@ def create_load_endpoint(
         "loading_location": loading_location,
         "destination": destination,
         "company": company,
-        "receipt_number": receipt_number,
+        "remito_number": remito_number,
         "liters": liters,
         "amount": amount,
     }
@@ -50,6 +50,6 @@ def create_load_endpoint(
         if value is not None
     }
 
-    payload = load_adapter.validate_python(form_data)
+    payload = record_adapter.validate_python(form_data)
 
-    return create_load(db, payload, photos)
+    return create_record(db, payload, photos)
