@@ -137,10 +137,10 @@ export default function RecordForm() {
   }
 
   return (
-    <div className="container animate-fade-in" style={{ paddingBottom: '3rem' }}>
+    <div className="container" style={{ paddingBottom: '3rem' }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-gradient">Nuevo Registro</h2>
+          <h2>Nuevo Registro</h2>
           <p>Driver: <strong>{driver.name}</strong></p>
         </div>
         <button className="btn btn-secondary" onClick={() => navigate('/')} style={{ padding: '0.5rem 1rem' }}>
@@ -184,7 +184,7 @@ export default function RecordForm() {
           </div>
 
           {/* Dynamic Fields */}
-          <div className="animate-slide-up">
+          <div>
             {category === 'remito' && (
               <>
                 <div className="form-group">
@@ -223,7 +223,7 @@ export default function RecordForm() {
 
           {/* Photo Upload (Only show if category is selected) */}
           {category && (
-            <div className="form-group mt-6 animate-slide-up">
+            <div className="form-group mt-6">
               <label className="form-label">Fotografías del Comprobante (Máx. 2)</label>
               
               {photos.length < 2 && (
@@ -251,7 +251,7 @@ export default function RecordForm() {
               {photos.length > 0 && (
                 <div className="photo-preview-grid">
                   {photos.map((photo, index) => (
-                    <div key={index} className="photo-preview-item animate-fade-in">
+                    <div key={index} className="photo-preview-item">
                       <img src={photo.preview} alt={`Preview ${index + 1}`} />
                       <button type="button" className="photo-remove-btn" onClick={() => removePhoto(index)}>
                         <X size={16} />

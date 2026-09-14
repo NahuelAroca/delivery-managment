@@ -30,12 +30,9 @@ export default function DriverLogin() {
 
   return (
     <div className="container" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card animate-slide-up" style={{ width: '100%' }}>
+      <div className="card" style={{ width: '100%' }}>
         <div className="text-center mb-6">
-          <div style={{ display: 'inline-flex', background: 'var(--primary-glow)', padding: '1rem', borderRadius: '50%', marginBottom: '1rem' }}>
-            <Truck size={40} color="var(--primary)" />
-          </div>
-          <h1 className="text-gradient">DeliveryApp</h1>
+          <h1>Canhuel SRL</h1>
           <p className="mt-4">Bienvenido, por favor identifícate para continuar.</p>
         </div>
 
