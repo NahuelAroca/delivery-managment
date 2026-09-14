@@ -1,10 +1,16 @@
 from datetime import date
 
 from fastapi import APIRouter, Depends, File, Form, UploadFile, Query, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import RedirectResponse
 from pydantic import TypeAdapter
 import os
 from sqlalchemy.orm import Session
+from supabase import create_client, Client
+
+supabase_url = os.environ.get("SUPABASE_URL")
+supabase_key = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(supabase_url, supabase_key)
+
 
 from app.database.database import get_db
 from app.schemas.record import RecordCreate, RecordResponse, RecordDetailResponse
@@ -78,10 +84,14 @@ def get_single_record(
 
 @router.get("/photos/{filename}")
 def get_photo(filename: str):
-    storage_dir = os.path.join(os.getcwd(), "storage", "photos")
-    file_path = os.path.join(storage_dir, filename)
-    
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail="Photo not found")
+    try:
+        # Create a signed URL valid for 60 seconds (1 minute)
+        response = supabase.storage.from_("photos").create_signed_url(filename, 60)
+        signed_url = response.get("signedURL") or response.get("signedUrl")
         
-    return FileResponse(file_path)
+        if not signed_url:
+            raise HTTPException(status_code=404, detail="Photo not found")
+            
+        return RedirectResponse(url=signed_url, status_code=307)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=f"Error accessing photo: {str(e)}")

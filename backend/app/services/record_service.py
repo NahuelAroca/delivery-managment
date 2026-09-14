@@ -1,9 +1,9 @@
 import os
-import shutil
 import uuid
 from fastapi import HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from supabase import create_client, Client
 
 from app.models.driver import Driver
 from app.models.record import Record
@@ -13,6 +13,9 @@ from app.models.general_expense import GeneralExpense
 from app.models.photo import Photo
 from app.schemas.record import RecordCreate
 
+supabase_url = os.environ.get("SUPABASE_URL")
+supabase_key = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(supabase_url, supabase_key)
 
 def create_record(
     db: Session,
@@ -68,18 +71,20 @@ def create_record(
         )
         db.add(general_expense)
 
-    storage_dir = os.path.join(os.getcwd(), "storage", "photos")
-    os.makedirs(storage_dir, exist_ok=True)
-
     for photo in photos:
         ext = os.path.splitext(photo.filename)[1]
         if not ext:
             ext = ".jpg" # fallback
         unique_filename = f"{uuid.uuid4()}{ext}"
-        file_path = os.path.join(storage_dir, unique_filename)
-
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(photo.file, buffer)
+        
+        file_bytes = photo.file.read()
+        
+        # Upload to Supabase Storage
+        supabase.storage.from_("photos").upload(
+            path=unique_filename,
+            file=file_bytes,
+            file_options={"content-type": photo.content_type}
+        )
 
         db.add(
             Photo(
