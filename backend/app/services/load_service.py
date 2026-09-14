@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -7,10 +7,21 @@ from app.models.load import Load
 from app.models.receipt import Receipt
 from app.models.fuel_record import FuelRecord
 from app.models.general_expense import GeneralExpense
+from app.models.photo import Photo
 from app.schemas.load import LoadCreate
 
 
-def create_load(db: Session, payload: LoadCreate):
+def create_load(
+    db: Session,
+    payload: LoadCreate,
+    photos: list[UploadFile],
+):
+    if len(photos) < 1 or len(photos) > 2:
+        raise HTTPException(
+            status_code=400,
+            detail="A load must have between 1 and 2 photos",
+        )
+
     driver = db.scalar(
         select(Driver).where(Driver.id == payload.driver_id)
     )
@@ -38,7 +49,6 @@ def create_load(db: Session, payload: LoadCreate):
             company=payload.company,
             receipt_number=payload.receipt_number,
         )
-
         db.add(receipt)
 
     elif payload.category == "fuel":
@@ -46,7 +56,6 @@ def create_load(db: Session, payload: LoadCreate):
             load_id=load.id,
             liters=payload.liters,
         )
-
         db.add(fuel_record)
 
     elif payload.category == "general":
@@ -54,8 +63,15 @@ def create_load(db: Session, payload: LoadCreate):
             load_id=load.id,
             amount=payload.amount,
         )
-
         db.add(general_expense)
+
+    for photo in photos:
+        db.add(
+            Photo(
+                load_id=load.id,
+                file_path=photo.filename,
+            )
+        )
 
     db.commit()
     db.refresh(load)
