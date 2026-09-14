@@ -1,0 +1,73 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Truck } from 'lucide-react';
+import { fetchDrivers } from '../api';
+
+export default function DriverLogin() {
+  const [drivers, setDrivers] = useState([]);
+  const [selectedDriver, setSelectedDriver] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchDrivers().then(data => {
+      setDrivers(data);
+      setIsLoading(false);
+    });
+  }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!selectedDriver) return;
+    
+    // Guardamos la sesión en localStorage para persistencia básica
+    const driver = drivers.find(d => d.id === parseInt(selectedDriver));
+    localStorage.setItem('currentDriver', JSON.stringify(driver));
+    
+    // Navegamos al formulario principal
+    navigate('/submit-record');
+  };
+
+  return (
+    <div className="container" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="card animate-slide-up" style={{ width: '100%' }}>
+        <div className="text-center mb-6">
+          <div style={{ display: 'inline-flex', background: 'var(--primary-glow)', padding: '1rem', borderRadius: '50%', marginBottom: '1rem' }}>
+            <Truck size={40} color="var(--primary)" />
+          </div>
+          <h1 className="text-gradient">DeliveryApp</h1>
+          <p className="mt-4">Bienvenido, por favor identifícate para continuar.</p>
+        </div>
+
+        <form onSubmit={handleLogin}>
+          <div className="form-group">
+            <label className="form-label" htmlFor="driverSelect">Seleccionar Conductor</label>
+            <select 
+              id="driverSelect"
+              className="form-control" 
+              value={selectedDriver}
+              onChange={(e) => setSelectedDriver(e.target.value)}
+              disabled={isLoading}
+              required
+            >
+              <option value="" disabled>-- Elige tu perfil --</option>
+              {drivers.map(driver => (
+                <option key={driver.id} value={driver.id}>
+                  {driver.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button 
+            type="submit" 
+            className="btn btn-primary btn-full mt-6"
+            disabled={!selectedDriver || isLoading}
+          >
+            Ingresar
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
