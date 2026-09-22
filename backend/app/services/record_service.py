@@ -1,6 +1,7 @@
 import os
 import uuid
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from fastapi import HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -111,10 +112,16 @@ def get_records(
         query = query.where(Record.driver_id == driver_id)
     if category:
         query = query.where(Record.category == category)
+    tz = ZoneInfo("America/Argentina/Buenos_Aires")
+    
     if start_date:
-        query = query.where(Record.date >= start_date)
+        dt_start = datetime.combine(start_date, datetime.min.time(), tzinfo=tz)
+        utc_start = dt_start.astimezone(ZoneInfo("UTC")).replace(tzinfo=None)
+        query = query.where(Record.created_at >= utc_start)
     if end_date:
-        query = query.where(Record.date <= end_date)
+        dt_end = datetime.combine(end_date, datetime.max.time(), tzinfo=tz)
+        utc_end = dt_end.astimezone(ZoneInfo("UTC")).replace(tzinfo=None)
+        query = query.where(Record.created_at <= utc_end)
         
     query = query.order_by(Record.date.desc(), Record.id.desc())
     return db.scalars(query).all()
