@@ -67,8 +67,12 @@ export default function RecordDetail() {
         <h3>Información General</h3>
         <div className="detail-grid mt-4">
           <div className="detail-item">
-            <span className="detail-label">Fecha</span>
+            <span className="detail-label">Fecha del Remito/Gasto</span>
             <span className="detail-value">{record.date}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Subido al sistema</span>
+            <span className="detail-value">{new Date(record.created_at + 'Z').toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', dateStyle: 'short', timeStyle: 'short' })}</span>
           </div>
           <div className="detail-item">
             <span className="detail-label">Chofer</span>
