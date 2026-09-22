@@ -35,7 +35,7 @@ export default function DriverLogin() {
           <p className="mt-4">Bienvenido, por favor identifícate para continuar.</p>
         </div>
 
-        <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           <Link to="/admin" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: '500' }}>
             Ingreso para Dueños (Panel de Control) &rarr;
           </Link>
