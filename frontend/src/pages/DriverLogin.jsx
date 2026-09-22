@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Truck } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { fetchDrivers } from '../api';
 
 export default function DriverLogin() {
@@ -64,6 +63,12 @@ export default function DriverLogin() {
             Ingresar
           </button>
         </form>
+      </div>
+      
+      <div className="mt-4 text-center">
+        <Link to="/admin" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.875rem' }}>
+          Ingreso para Dueños (Panel de Control)
+        </Link>
       </div>
     </div>
   );
