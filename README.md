@@ -1,53 +1,73 @@
-# Delivery Management
+# Canhuel SRL - Sistema de Gestión de Repartos (v1.0.0)
 
-Delivery Management is an application designed to manage and organize delivery operations.
+Una aplicación web progresiva y moderna diseñada para que los choferes de Canhuel SRL puedan registrar rápidamente sus remitos, cargas de combustible y gastos generales desde su teléfono móvil, y para que la administración pueda visualizar, filtrar y descargar estos comprobantes en tiempo real.
 
-The project aims to provide a centralized system for managing deliveries, loads, drivers, vehicles, and the different operations involved in the delivery process.
+## 🚀 Características Principales (v1.0.0)
 
-## Project Goals
+### Para el Chofer (Frontend Móvil)
+- **Selección Rápida:** Ingreso mediante perfil de chofer (sin contraseñas complejas para agilizar el trabajo en ruta).
+- **Carga de Comprobantes:** Soporte para tres categorías de registros:
+  - **Remitos:** Detalle de lugar de carga, destino, empresa y número de remito.
+  - **Combustible:** Registro de litros cargados.
+  - **Gastos Generales:** Registro del importe gastado.
+- **Evidencia Fotográfica:** Opción para subir hasta 2 fotos por registro, ya sea tomando la foto en el momento con la cámara del celular o eligiendo desde la galería.
+- **Diseño Adaptable:** Interfaz moderna, rápida y "Glassmorphism", optimizada para uso con una sola mano en dispositivos móviles.
 
-The main goals of the project are:
+### Para la Administración (Panel de Control)
+- **Dashboard Centralizado:** Tabla en vivo con todos los registros enviados por la flota.
+- **Filtros Avanzados:** Búsqueda cruzada por Chofer, Categoría y Rango de Fechas (basado en el momento exacto en que el sistema recibió el registro en hora de Argentina).
+- **Detalle Integral:** Visualización de toda la metadata del gasto y acceso a la descarga de las imágenes originales en alta resolución guardadas de forma segura.
 
-* Manage delivery operations.
-* Organize loads and deliveries.
-* Manage drivers and vehicles.
-* Centralize relevant delivery information.
-* Provide a reliable backend for the application.
-* Build a maintainable and scalable system.
+## 🛠 Arquitectura y Tecnologías
 
-## Project Structure
+El sistema está dividido en dos aplicaciones independientes:
 
-The project is currently under development.
+### Backend (API REST)
+- **Framework:** FastAPI (Python 3.12+).
+- **Base de Datos:** PostgreSQL alojada en **Supabase** (usando *Transaction Pooler* por IPv4).
+- **ORM:** SQLAlchemy 2.0 (usando el driver `psycopg3`).
+- **Almacenamiento (Storage):** Supabase Storage Privado (acceso mediante URLs firmadas temporalmente por seguridad).
+- **Alojamiento:** Desplegado en **Render** (Web Service).
 
-As development progresses, the repository will be organized into the different components required by the application, including the backend, database, and other application components.
+### Frontend (SPA)
+- **Framework:** React 18 (construido con Vite).
+- **Enrutamiento:** React Router DOM (Single Page Application).
+- **Estilos:** Vanilla CSS moderno con variables CSS puras.
+- **Alojamiento:** Desplegado en **Vercel** (con reglas de reescritura configuradas en `vercel.json` para soportar navegación del lado del cliente).
 
-## Technologies
+## 📦 Estructura del Proyecto
 
-The project currently uses technologies such as:
+```
+delivery-managment/
+├── backend/                  # API en FastAPI
+│   ├── app/
+│   │   ├── database/         # Configuración y conexión a PostgreSQL (Supabase)
+│   │   ├── models/           # Tablas de SQLAlchemy (drivers, records, etc.)
+│   │   ├── routers/          # Endpoints de la API
+│   │   ├── schemas/          # Validaciones de Pydantic
+│   │   └── services/         # Lógica de negocio (CRUD y filtros con Timezones)
+│   ├── render.yaml           # Configuración de despliegue para Render
+│   └── requirements.txt      # Dependencias de Python
+└── frontend/                 # Aplicación en React
+    ├── src/
+    │   ├── api.js            # Cliente HTTP para conectarse al backend
+    │   ├── pages/            # Vistas principales (DriverLogin, RecordForm, AdminDashboard)
+    │   └── index.css         # Sistema de diseño, colores y animaciones
+    ├── vercel.json           # Configuración de rutas para Vercel
+    └── package.json          # Dependencias de Node.js
+```
 
-* Python
-* FastAPI
-* Pydantic
-* Supabase
-* PostgreSQL
+## ⚙️ Configuración y Despliegue
 
-The technology stack may evolve as the project develops.
+### Variables de Entorno Requeridas
 
-## Status
+**Para el Backend (Render):**
+- `DATABASE_URL`: URL de conexión a Supabase (Pooler port 6543).
+- `SUPABASE_URL`: URL del proyecto de Supabase.
+- `SUPABASE_KEY`: Clave de servicio (Service Role Key) de Supabase para poder generar URLs firmadas del Storage.
 
-🚧 **In development**
+**Para el Frontend (Vercel):**
+- `VITE_API_URL`: URL pública del backend en Render (ej. `https://canhuel-api.onrender.com`).
 
-The project is actively being developed. Architecture, features, and implementation details may change as new requirements are introduced.
-
-## Future Documentation
-
-As the project grows, this README will be expanded with information about:
-
-* Installation and setup.
-* Project architecture.
-* Environment configuration.
-* API documentation.
-* Database structure.
-* Development guidelines.
-* Testing.
-* Deployment.
+---
+*Desarrollado para la gestión logística de Canhuel SRL.*
