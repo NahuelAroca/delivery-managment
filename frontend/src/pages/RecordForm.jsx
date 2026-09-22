@@ -239,7 +239,6 @@ export default function RecordForm() {
                   <input 
                     type="file" 
                     accept="image/*" 
-                    capture="environment" // Suggests mobile devices to open the camera
                     multiple
                     style={{ display: 'none' }}
                     ref={fileInputRef}
