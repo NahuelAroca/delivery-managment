@@ -35,6 +35,12 @@ export default function DriverLogin() {
           <p className="mt-4">Bienvenido, por favor identifícate para continuar.</p>
         </div>
 
+        <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+          <Link to="/admin" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: '500' }}>
+            Ingreso para Dueños (Panel de Control) &rarr;
+          </Link>
+        </div>
+
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <label className="form-label" htmlFor="driverSelect">Seleccionar Conductor</label>
@@ -63,12 +69,6 @@ export default function DriverLogin() {
             Ingresar
           </button>
         </form>
-      </div>
-      
-      <div className="mt-4 text-center">
-        <Link to="/admin" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.875rem' }}>
-          Ingreso para Dueños (Panel de Control)
-        </Link>
       </div>
     </div>
   );
