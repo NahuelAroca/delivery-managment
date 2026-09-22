@@ -67,8 +67,8 @@ def create_record_endpoint(
 def get_all_records(
     driver_id: int | None = Query(None),
     category: str | None = Query(None),
-    start_date: str | None = Query(None),
-    end_date: str | None = Query(None),
+    start_date: date | None = Query(None),
+    end_date: date | None = Query(None),
     db: Session = Depends(get_db)
 ):
     return get_records(db, driver_id, category, start_date, end_date)

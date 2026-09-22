@@ -1,5 +1,6 @@
 import os
 import uuid
+from datetime import date
 from fastapi import HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -102,8 +103,8 @@ def get_records(
     db: Session,
     driver_id: int | None = None,
     category: str | None = None,
-    start_date: str | None = None,
-    end_date: str | None = None
+    start_date: date | None = None,
+    end_date: date | None = None
 ):
     query = select(Record)
     if driver_id:
