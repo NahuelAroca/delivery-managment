@@ -104,7 +104,8 @@ export default function AdminDashboard() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Fecha</th>
+              <th>Fecha (Gasto)</th>
+              <th>Subido el</th>
               <th>Chofer</th>
               <th>Categoría</th>
               <th>Acciones</th>
@@ -124,6 +125,7 @@ export default function AdminDashboard() {
                 <tr key={record.id}>
                   <td>#{record.id}</td>
                   <td>{record.date}</td>
+                  <td>{new Date(record.created_at + 'Z').toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', dateStyle: 'short', timeStyle: 'short' })}</td>
                   <td>{getDriverName(record.driver_id)}</td>
                   <td>
                     <span className={`badge badge-${record.category}`}>
